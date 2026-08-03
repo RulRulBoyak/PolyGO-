@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PolyGo" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/pks_blue_variant</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/pks_green_variant</item>
+        <item name="colorOnSecondary">@color/white</item>
     </style>
 </resources>

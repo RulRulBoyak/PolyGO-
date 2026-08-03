@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">PolyGo+</string>
+    <string name="ai_assistant">AI Assistant</string>
+    <string name="improve_description">Improve Product Description</string>
+    <string name="negotiate_price">Negotiate Price (Polite Suggestions)</string>
+    <string name="suggest_fair_price">Suggest Fair Price</string>
+    <string name="ai_generated_result">AI Generated Result</string>
+    <string name="result_placeholder">Result will appear here...</string>
+    <string name="apply_to_chat">Apply to Chat</string>
+    <string name="logo_content_description">PolyGo+ Logo</string>
+
+    <string name="privacy_policy_text">
+        &lt;b&gt;Privacy Policy for PolyGo+&lt;/b&gt;\n\n
+        Last updated: August 03, 2026\n\n
+        PolyGo+ (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by PolyGo+.\n\n
+        &lt;b&gt;1. Information We Collect&lt;/b&gt;\n
+        To facilitate a secure campus marketplace, we collect information you provide when you register, including:\n
+        - Name\n
+        - Campus Email Address\n
+        - Student Identification (for PKS verification)\n
+        - Profile information\n\n
+        &lt;b&gt;2. How We Use Your Information&lt;/b&gt;\n
+        We use the information we collect to:\n
+        - Verify your status as a student/staff through PKS (Pusat Komputer dan Sistem) verification.\n
+        - Provide, operate, and maintain our marketplace.\n
+        - Facilitate transactions between buyers and sellers.\n
+        - Send you technical notices, updates, and support messages.\n\n
+        &lt;b&gt;3. PKS Verification&lt;/b&gt;\n
+        As a campus-exclusive marketplace, we verify user identity through the institution\'s PKS system. This ensures all users are valid members of the campus community. We do not store your PKS credentials; we only receive a confirmation of your status.\n\n
+        &lt;b&gt;4. Sharing of Information&lt;/b&gt;\n
+        We do not share your personal information with third parties except:\n
+        - Between buyers and sellers to facilitate a transaction (e.g., contact information).\n
+        - If required by law or to protect the rights of PolyGo+.\n\n
+        &lt;b&gt;5. Data Security&lt;/b&gt;\n
+        We use reasonable measures to help protect information about you from loss, theft, misuse, and unauthorized access.\n\n
+        &lt;b&gt;6. Contact Us&lt;/b&gt;\n
+        If you have any questions about this Privacy Policy, please contact us at support@poliku.com.
+    </string>
 </resources>

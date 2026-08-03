@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
+    <color name="pks_blue">#0D47A1</color>
+    <color name="pks_blue_variant">#1565C0</color>
+    <color name="pks_green">#2E7D32</color>
+    <color name="pks_green_variant">#388E3C</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_700">#616161</color>
 </resources>
