@@ -1,12 +1,5 @@
 <resources>
     <string name="app_name">PolyGo+</string>
-    <string name="ai_assistant">AI Assistant</string>
-    <string name="improve_description">Improve Product Description</string>
-    <string name="negotiate_price">Negotiate Price (Polite Suggestions)</string>
-    <string name="suggest_fair_price">Suggest Fair Price</string>
-    <string name="ai_generated_result">AI Generated Result</string>
-    <string name="result_placeholder">Result will appear here...</string>
-    <string name="apply_to_chat">Apply to Chat</string>
     <string name="logo_content_description">PolyGo+ Logo</string>
 
     <string name="privacy_policy_text">
