@@ -2,8 +2,17 @@
 <resources>
     <color name="pks_blue">#0D47A1</color>
     <color name="pks_blue_dark">#0A387E</color>
+    <color name="pks_blue_variant">#82B1FF</color>
     <color name="pks_green">#2E7D32</color>
     <color name="pks_green_dark">#1B5E20</color>
+    <color name="pks_green_variant">#8FD19E</color>
+    <color name="airbnb_coral">#FF385C</color>
+    <color name="airbnb_coral_dark">#D70466</color>
+    <color name="airbnb_ink">#222222</color>
+    <color name="airbnb_muted">#717171</color>
+    <color name="airbnb_line">#E8E8E8</color>
+    <color name="airbnb_surface">#FAFAFA</color>
+    <color name="airbnb_chip">#F2F2F2</color>
     <color name="glass_white">#99FFFFFF</color>
     <color name="glass_border">#33FFFFFF</color>
     <color name="surface_variant_light">#F5F7FA</color>

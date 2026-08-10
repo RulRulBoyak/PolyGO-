@@ -4,171 +4,349 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface_variant_light">
+    android:background="@color/airbnb_surface">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:background="@color/airbnb_surface"
+        app:elevation="0dp"
+        app:liftOnScroll="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/searchBarCard"
-                style="@style/Widget.PolyGo.GlassCard"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_margin="16dp">
+                android:layout_height="64dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="8dp"
+                app:strokeColor="@color/airbnb_line"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp">
+                    android:paddingStart="20dp"
+                    android:paddingEnd="18dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:contentDescription="@null"
                         android:src="@android:drawable/ic_menu_search"
-                        app:tint="@color/pks_blue" />
+                        app:tint="@color/airbnb_ink" />
 
-                    <EditText
-                        android:id="@+id/editTextSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:background="@null"
-                        android:hint="Search products, services..."
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:textColor="@color/pks_blue"
-                        android:textColorHint="#800D47A1"
-                        android:textSize="16sp" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/editTextSearch"
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:background="@null"
+                            android:hint="Where to shop?"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:padding="0dp"
+                            android:singleLine="true"
+                            android:textColor="@color/airbnb_ink"
+                            android:textColorHint="@color/airbnb_ink"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Products, services, campus sellers"
+                            android:textColor="@color/airbnb_muted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonFilters"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:contentDescription="Filters"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:cornerRadius="22dp"
+                        app:icon="@android:drawable/ic_menu_sort_by_size"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/airbnb_ink"
+                        app:strokeColor="@color/airbnb_line" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCategories"
+                android:layout_width="match_parent"
+                android:layout_height="86dp"
+                android:layout_marginTop="14dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_category" />
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="112dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="24dp">
 
-            <!-- Bento Box Top Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/bentoFeatured"
-                style="@style/Widget.PolyGo.BentoCard"
+                style="@style/Widget.PolyGo.AirbnbCard"
                 android:layout_width="0dp"
-                android:layout_height="180dp"
+                android:layout_height="190dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/airbnb_ink"
                 app:layout_constraintEnd_toStartOf="@+id/bentoSmall1"
                 app:layout_constraintHorizontal_weight="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:padding="16dp"
-                    android:text="Featured\nMarketplace"
-                    android:textAppearance="?attr/textAppearanceTitleLarge"
-                    android:textColor="@color/pks_blue"
-                    android:textStyle="bold" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_airbnb_featured">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Featured marketplace"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:maxLines="2"
+                            android:text="Fresh campus picks with verified sellers nearby"
+                            android:textColor="#EDEDED"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/bentoSmall1"
-                style="@style/Widget.PolyGo.BentoCard"
+                style="@style/Widget.PolyGo.AirbnbCard"
                 android:layout_width="0dp"
-                android:layout_height="85dp"
+                android:layout_height="90dp"
                 android:layout_marginStart="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/bentoFeatured"
                 app:layout_constraintTop_toTopOf="parent">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_dialog_email"
-                    app:tint="@color/pks_green" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="@null"
+                        android:src="@android:drawable/ic_dialog_email"
+                        app:tint="@color/airbnb_coral" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Deals"
+                        android:textColor="@color/airbnb_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/bentoSmall2"
-                style="@style/Widget.PolyGo.BentoCard"
+                style="@style/Widget.PolyGo.AirbnbCard"
                 android:layout_width="0dp"
-                android:layout_height="85dp"
+                android:layout_height="90dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/bentoFeatured"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/bentoFeatured"
                 app:layout_constraintTop_toBottomOf="@+id/bentoSmall1">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:src="@android:drawable/ic_menu_gallery"
-                    app:tint="@color/pks_blue" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="@null"
+                        android:src="@android:drawable/ic_menu_mapmode"
+                        app:tint="@color/pks_blue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Nearby"
+                        android:textColor="@color/airbnb_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/verificationBanner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bentoFeatured"
+                app:strokeColor="@color/airbnb_line"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:background="@drawable/bg_verified_badge"
+                            android:gravity="center"
+                            android:text="V"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Verified campus sellers"
+                            android:textColor="@color/airbnb_ink"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Shop with student-friendly sellers and clear pickup details."
+                            android:textColor="@color/airbnb_muted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tvCategoriesHeader"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvRecommendedHeader"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Popular Categories"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/pks_blue"
+                android:layout_marginTop="24dp"
+                android:text="Recommended for you"
+                android:textColor="@color/airbnb_ink"
+                android:textSize="22sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bentoFeatured" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:clipToPadding="false"
-                android:layoutAnimation="@anim/layout_cascade"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/tvCategoriesHeader"
-                tools:listitem="@android:layout/simple_list_item_1" />
+                app:layout_constraintTop_toBottomOf="@+id/verificationBanner" />
 
             <TextView
-                android:id="@+id/tvRecommendedHeader"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvRecommendedSubhead"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Recommended for You"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/pks_blue"
-                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                android:text="Popular items around your campus"
+                android:textColor="@color/airbnb_muted"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories" />
+                app:layout_constraintTop_toBottomOf="@+id/tvRecommendedHeader" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layoutAnimation="@anim/layout_cascade"
+                android:layout_marginTop="14dp"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/tvRecommendedHeader"
+                app:layout_constraintTop_toBottomOf="@+id/tvRecommendedSubhead"
                 app:spanCount="2"
                 tools:listitem="@layout/item_product_card" />
 
