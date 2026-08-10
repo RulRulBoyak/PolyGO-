@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="135"
+        android:centerColor="@color/airbnb_coral"
+        android:endColor="@color/pks_blue"
+        android:startColor="@color/airbnb_ink"
+        android:type="linear" />
+    <corners android:radius="22dp" />
+</shape>
