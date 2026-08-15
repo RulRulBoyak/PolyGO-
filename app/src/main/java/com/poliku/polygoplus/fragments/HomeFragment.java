@@ -36,21 +36,25 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupHeader();
         setupCategories();
         setupProducts();
         setupSearchActions();
-        setupVerificationBanner();
-        animateHeader();
+    }
+
+    private void setupHeader() {
+        // Mock profile click
+        binding.ivProfilePic.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Opening profile settings...", Toast.LENGTH_SHORT).show());
     }
 
     private void setupCategories() {
         List<Category> categories = new ArrayList<>();
+        categories.add(new Category("Food", android.R.drawable.ic_menu_today));
+        categories.add(new Category("Drink", android.R.drawable.ic_menu_compass));
         categories.add(new Category("Tech", android.R.drawable.ic_menu_camera));
-        categories.add(new Category("Fashion", android.R.drawable.ic_menu_gallery));
-        categories.add(new Category("Home", android.R.drawable.ic_menu_manage));
         categories.add(new Category("Books", android.R.drawable.ic_menu_agenda));
-        categories.add(new Category("Services", android.R.drawable.ic_menu_compass));
-        categories.add(new Category("Deals", android.R.drawable.ic_menu_week));
+        categories.add(new Category("Repair", android.R.drawable.ic_menu_manage));
 
         binding.recyclerViewCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerViewCategories.setAdapter(new CategoryAdapter(categories));
@@ -72,36 +76,6 @@ public class HomeFragment extends Fragment {
     private void setupSearchActions() {
         View.OnClickListener openSearch = v -> startActivity(new Intent(requireContext(), SearchActivity.class));
         binding.searchBarCard.setOnClickListener(openSearch);
-        binding.editTextSearch.setOnClickListener(openSearch);
-        binding.buttonFilters.setOnClickListener(v ->
-                Toast.makeText(requireContext(), "Filters coming soon", Toast.LENGTH_SHORT).show());
-    }
-
-    private void setupVerificationBanner() {
-        binding.verificationBanner.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Verified sellers are checked before listing.", Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void animateHeader() {
-        animateIn(binding.searchBarCard, 0);
-        animateIn(binding.recyclerViewCategories, 1);
-        animateIn(binding.bentoFeatured, 2);
-        animateIn(binding.bentoSmall1, 3);
-        animateIn(binding.bentoSmall2, 4);
-        animateIn(binding.verificationBanner, 5);
-    }
-
-    private static void animateIn(View view, int index) {
-        view.setAlpha(0f);
-        view.setTranslationY(28f);
-        view.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setStartDelay(index * 70L)
-                .setDuration(360L)
-                .setInterpolator(new DecelerateInterpolator())
-                .start();
     }
 
     @Override
@@ -161,7 +135,6 @@ public class HomeFragment extends Fragment {
             Category category = categories.get(position);
             holder.binding.textViewCategoryName.setText(category.name);
             holder.binding.imageViewCategory.setImageResource(category.iconRes);
-            animateIn(holder.binding.getRoot(), position);
         }
 
         @Override
@@ -196,16 +169,13 @@ public class HomeFragment extends Fragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Product product = products.get(position);
             holder.binding.textViewTitle.setText(product.title);
-            holder.binding.textViewSeller.setText(product.seller);
             holder.binding.textViewPrice.setText(product.price);
             holder.binding.textViewRating.setText(product.rating);
             holder.binding.textViewDistance.setText(product.distance);
             holder.binding.imageView.setImageResource(product.imageRes);
-            holder.binding.buttonFavorite.setColorFilter(0xFF222222);
-            holder.binding.buttonFavorite.setSelected(false);
+            
             holder.binding.buttonFavorite.setOnClickListener(v -> {
                 v.setSelected(!v.isSelected());
-                holder.binding.buttonFavorite.setColorFilter(v.isSelected() ? 0xFFFF385C : 0xFF222222);
                 v.animate()
                         .scaleX(v.isSelected() ? 1.14f : 1f)
                         .scaleY(v.isSelected() ? 1.14f : 1f)
@@ -213,7 +183,6 @@ public class HomeFragment extends Fragment {
                         .withEndAction(() -> v.animate().scaleX(1f).scaleY(1f).setDuration(120L).start())
                         .start();
             });
-            animateIn(holder.binding.getRoot(), position);
         }
 
         @Override

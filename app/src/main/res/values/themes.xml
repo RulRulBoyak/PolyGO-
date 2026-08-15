@@ -4,10 +4,13 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/airbnb_coral</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/pks_blue</item>
+        <item name="colorSecondary">@color/airbnb_ink</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSurface">@color/airbnb_surface</item>
-        <item name="android:statusBarColor">@color/airbnb_surface</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/airbnb_ink</item>
+        <item name="android:textColorSecondary">@color/airbnb_muted</item>
     </style>
 
     <style name="Theme.PolyGo" parent="Base.Theme.PolyGo">
@@ -15,14 +18,24 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="Widget.PolyGo.GlassCard" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">24dp</item>
-        <item name="cardElevation">8dp</item>
-        <item name="android:background">@drawable/bg_glass_card</item>
+    <style name="Widget.PolyGo.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/airbnb_border</item>
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
     <style name="Widget.PolyGo.PrimaryGradientButton" parent="Widget.Material3.Button">
-        <item name="android:background">@drawable/btn_gradient_primary</item>
+        <item name="android:backgroundTint">@color/airbnb_coral</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.PolyGo.Button</item>
+    </style>
+
+    <style name="Widget.PolyGo.Button" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/airbnb_coral</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:textColor">@color/white</item>
@@ -30,30 +43,33 @@
         <item name="android:stateListAnimator">@animator/press_scale</item>
     </style>
 
+    <style name="Widget.PolyGo.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/airbnb_ink</item>
+        <item name="android:textColor">@color/airbnb_ink</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.PolyGo.Button</item>
+        <item name="android:stateListAnimator">@animator/press_scale</item>
+    </style>
+
     <style name="ShapeAppearance.PolyGo.Button" parent="ShapeAppearance.Material3.MediumComponent">
-        <item name="cornerSize">16dp</item>
+        <item name="cornerSize">8dp</item>
     </style>
 
     <style name="Widget.PolyGo.BentoCard" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="cardBackgroundColor">@color/surface_variant_light</item>
-        <item name="android:stateListAnimator">@animator/press_scale</item>
-    </style>
-
-    <style name="Widget.PolyGo.AirbnbCard" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">22dp</item>
+        <item name="cardCornerRadius">16dp</item>
         <item name="cardElevation">0dp</item>
-        <item name="strokeColor">@color/airbnb_line</item>
         <item name="strokeWidth">1dp</item>
-        <item name="android:stateListAnimator">@animator/press_scale</item>
+        <item name="strokeColor">@color/airbnb_border</item>
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
     <style name="ShapeAppearance.PolyGo.CardImage" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">20dp</item>
-        <item name="cornerSizeTopRight">20dp</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSize">16dp</item>
     </style>
+
+    <style name="ShapeAppearance.PolyGo.ProductImage" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
 </resources>

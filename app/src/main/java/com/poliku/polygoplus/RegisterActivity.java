@@ -24,10 +24,6 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             finish();
         });
-
-        findViewById(R.id.cardUploadID).setOnClickListener(v -> {
-            Toast.makeText(this, "Upload ID feature coming soon!", Toast.LENGTH_SHORT).show();
-        });
     }
 
     @Override

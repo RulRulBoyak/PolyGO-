@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="76dp"
-    android:layout_height="82dp"
-    android:layout_marginEnd="12dp"
+        android:layout_width="76dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:clipToPadding="false"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="28dp"
+        app:cardCornerRadius="18dp"
         app:cardElevation="0dp"
-        app:strokeColor="@color/airbnb_line"
-        app:strokeWidth="1dp">
+        app:strokeColor="@color/airbnb_border"
+        app:strokeWidth="1dp"
+        android:stateListAnimator="@animator/press_scale">
 
         <ImageView
             android:id="@+id/imageViewCategory"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:contentDescription="@null"
             android:src="@android:drawable/ic_menu_gallery"
-            app:tint="@color/airbnb_coral" />
+            app:tint="@color/pks_blue" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/textViewCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
         android:text="Category"
         android:textColor="@color/airbnb_ink"
-        android:textSize="12sp" />
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textStyle="bold" />
 
 </LinearLayout>

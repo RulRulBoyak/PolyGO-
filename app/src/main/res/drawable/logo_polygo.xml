@@ -6,7 +6,7 @@
     android:viewportHeight="108">
 
     <path
-        android:fillColor="@color/airbnb_coral"
+        android:fillColor="@color/pks_blue"
         android:pathData="M54,8L94,31V77L54,100L14,77V31Z" />
 
     <path

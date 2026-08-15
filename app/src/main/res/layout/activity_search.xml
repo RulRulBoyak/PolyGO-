@@ -8,13 +8,17 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="0dp">
 
         <com.google.android.material.search.SearchBar
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search products..." />
+            android:hint="Search campus..."
+            style="@style/Widget.Material3.SearchBar"
+            android:layout_margin="16dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -22,9 +26,9 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Search products..."
+        android:hint="Search campus..."
         app:layout_anchor="@id/searchBar">
-        <!-- Search results would go here -->
+        <!-- Search results -->
     </com.google.android.material.search.SearchView>
 
     <androidx.core.widget.NestedScrollView
@@ -42,7 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Recent Searches"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
@@ -52,17 +57,14 @@
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Electronics" />
+                    android:text="Textbooks"
+                    style="@style/Widget.Material3.Chip.Suggestion" />
 
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Clothing" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Home &amp; Kitchen" />
+                    android:text="Dorm Furniture"
+                    style="@style/Widget.Material3.Chip.Suggestion" />
 
             </com.google.android.material.chip.ChipGroup>
 
