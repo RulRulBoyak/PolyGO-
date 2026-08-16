@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface_variant_light">
+    android:background="@color/surface_variant_light"
+    android:clipToPadding="false"
+    android:fillViewport="true">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pks_blue_dark"
-        app:elevation="0dp">
+        android:orientation="vertical">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/pks_blue_dark"
             android:paddingStart="22dp"
             android:paddingTop="18dp"
             android:paddingEnd="22dp"
@@ -120,16 +122,13 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_home_content"
-        android:clipToPadding="false"
-        android:fillViewport="true"
         android:paddingBottom="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,7 +162,7 @@
                 tools:listitem="@layout/item_category" />
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="154dp"
+                android:layout_height="184dp"
                 android:layout_marginTop="22dp"
                 app:cardBackgroundColor="@color/pks_blue"
                 app:cardCornerRadius="22dp"
@@ -178,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:text="Your campus,\nyour marketplace."
                         android:textColor="@color/white"
-                        android:textSize="21sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/ivFeatureArt"
                         app:layout_constraintStart_toStartOf="parent"
@@ -187,7 +186,7 @@
                         android:id="@+id/tvFeatureSub"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
+                        android:layout_marginTop="6dp"
                         android:text="Buy, sell and discover from people around you."
                         android:textColor="@color/blue_100"
                         android:textSize="12sp"
@@ -197,8 +196,8 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnExploreNow"
                         android:layout_width="wrap_content"
-                        android:layout_height="38dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="10dp"
                         android:text="Explore now"
                         android:textColor="@color/pks_blue"
                         android:textSize="12sp"
@@ -208,8 +207,8 @@
                         app:layout_constraintTop_toBottomOf="@id/tvFeatureSub" />
                     <ImageView
                         android:id="@+id/ivFeatureArt"
-                        android:layout_width="118dp"
-                        android:layout_height="118dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
                         android:src="@drawable/bg_featured_card"
@@ -255,5 +254,6 @@
                 app:spanCount="2"
                 tools:listitem="@layout/item_product_card" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
