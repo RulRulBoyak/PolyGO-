@@ -39,7 +39,11 @@ public final class AppDataStore {
 
     public static void initialize(Context context) {
         SharedPreferences p = prefs(context);
-        if (p.getBoolean(KEY_SEEDED, false)) return;
+        if (p.getBoolean(KEY_SEEDED, false)) {
+            // Self-repair: Ensure favorites is a Set if it was previously a String.
+            favoriteIds(context);
+            return;
+        }
         JSONArray listings = new JSONArray();
         addListing(listings, "Modern Sofa", "Furniture Store", "180", "4.9", "0.4 km away", R.drawable.bg_product_furniture, "Furniture", "Clean modern sofa in good condition. Pickup near campus.", false);
         addListing(listings, "Gaming Laptop", "Tech World", "2450", "4.8", "0.8 km away", R.drawable.bg_product_electronics, "Electronics", "Reliable gaming laptop, ideal for study and entertainment.", false);
