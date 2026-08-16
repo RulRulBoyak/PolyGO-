@@ -48,7 +48,7 @@ public final class AppDataStore {
         addListing(listings, "Wireless Earbuds", "Sound Box", "120", "4.6", "1.4 km away", R.drawable.bg_product_electronics, "Electronics", "Wireless earbuds with charging case.", false);
         addListing(listings, "Desk Lamp", "Office Pro", "38", "0.9", "0.9 km away", R.drawable.bg_product_home, "Home", "Adjustable desk lamp for late-night study sessions.", false);
         p.edit().putString(KEY_LISTINGS, listings.toString())
-                .putString(KEY_FAVORITES, "[]")
+                .putStringSet(KEY_FAVORITES, new HashSet<>())
                 .putString(KEY_THREADS, "[]")
                 .putString(KEY_NOTIFICATIONS, "[]")
                 .putString(KEY_TRANSACTIONS, "[]")
@@ -182,7 +182,15 @@ public final class AppDataStore {
         prefs(context).edit().putStringSet(KEY_FAVORITES, ids).apply();
     }
 
-    private static Set<String> favoriteIds(Context context) { return new HashSet<>(prefs(context).getStringSet(KEY_FAVORITES, new HashSet<>())); }
+    private static Set<String> favoriteIds(Context context) {
+        try {
+            return new HashSet<>(prefs(context).getStringSet(KEY_FAVORITES, new HashSet<>()));
+        } catch (ClassCastException e) {
+            // If the key was previously used to store a String (legacy JSON array), clear it.
+            prefs(context).edit().remove(KEY_FAVORITES).apply();
+            return new HashSet<>();
+        }
+    }
 
     public static List<ProductRecord> getFavorites(Context context) {
         Set<String> ids = favoriteIds(context); List<ProductRecord> result = new ArrayList<>();

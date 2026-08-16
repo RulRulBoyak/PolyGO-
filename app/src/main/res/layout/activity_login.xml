@@ -8,11 +8,13 @@
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="Back"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_menu_revert"
+        android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/airbnb_ink" />
@@ -22,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Log in"
         android:textAppearance="?attr/textAppearanceHeadlineLarge"
         android:textColor="@color/airbnb_ink"
@@ -33,8 +35,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:padding="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp"
         app:layout_constraintTop_toBottomOf="@id/tvLoginTitle">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -50,7 +55,7 @@
                 android:id="@+id/etMatrixNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,32 +82,23 @@
             android:id="@+id/btnLoginNormal"
             style="@style/Widget.PolyGo.Button"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="32dp"
+            android:layout_height="52dp"
+            android:minHeight="0dp"
+            android:layout_marginTop="24dp"
             android:text="Continue"
             android:textAllCaps="false"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvOr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:text="or"
-            android:textAppearance="?attr/textAppearanceLabelLarge"
-            android:textColor="@color/airbnb_muted" />
-
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateAccount"
             style="@style/Widget.PolyGo.Button.Outlined"
-            android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:text="Continue with Google"
+            android:layout_height="52dp"
+            android:minHeight="0dp"
+            android:layout_marginTop="16dp"
+            android:text="Create an account"
             android:textAllCaps="false"
-            app:icon="@android:drawable/ic_menu_search"
-            app:iconGravity="textStart" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

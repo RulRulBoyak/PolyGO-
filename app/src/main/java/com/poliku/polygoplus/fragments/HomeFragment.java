@@ -45,16 +45,27 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupHeader() {
+        String name = AppDataStore.userName(requireContext());
+        if (name == null || name.trim().isEmpty() || "PolyGo member".equals(name)) {
+            binding.tvGreeting.setText("Good to see you 👋");
+        } else {
+            String hourGreeting;
+            int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+            if (hour < 12) hourGreeting = "Good morning";
+            else if (hour < 18) hourGreeting = "Good afternoon";
+            else hourGreeting = "Good evening";
+            binding.tvGreeting.setText(hourGreeting + ", " + name + " 👋");
+        }
         binding.ivProfilePic.setOnClickListener(v -> startActivity(new Intent(requireContext(), AccountActivity.class)));
     }
 
     private void setupCategories() {
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Food", android.R.drawable.ic_menu_today));
-        categories.add(new Category("Drink", android.R.drawable.ic_menu_compass));
-        categories.add(new Category("Tech", android.R.drawable.ic_menu_camera));
-        categories.add(new Category("Books", android.R.drawable.ic_menu_agenda));
-        categories.add(new Category("Repair", android.R.drawable.ic_menu_manage));
+        categories.add(new Category("Food", R.drawable.ic_category_food));
+        categories.add(new Category("Drink", R.drawable.ic_category_drink));
+        categories.add(new Category("Tech", R.drawable.ic_category_tech));
+        categories.add(new Category("Books", R.drawable.ic_category_books));
+        categories.add(new Category("Repair", R.drawable.ic_category_repair));
 
         binding.recyclerViewCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerViewCategories.setAdapter(new CategoryAdapter(categories));
@@ -73,6 +84,7 @@ public class HomeFragment extends Fragment {
         View.OnClickListener openSearch = v -> startActivity(new Intent(requireContext(), SearchActivity.class));
         binding.searchBarCard.setOnClickListener(openSearch);
         binding.btnExploreNow.setOnClickListener(openSearch);
+        binding.tvSeeAllProducts.setOnClickListener(openSearch);
     }
 
     @Override

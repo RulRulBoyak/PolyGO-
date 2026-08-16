@@ -15,6 +15,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         AppDataStore.initialize(this);
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+
         findViewById(R.id.btnLoginNormal).setOnClickListener(v -> {
             String studentId = ((com.google.android.material.textfield.TextInputEditText)findViewById(R.id.etMatrixNo)).getText().toString().trim();
             String password = ((com.google.android.material.textfield.TextInputEditText)findViewById(R.id.etPassword)).getText().toString();
@@ -24,7 +26,10 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             finish();
         });
-        findViewById(R.id.btnLoginGoogle).setVisibility(View.GONE);
+        findViewById(R.id.btnCreateAccount).setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
     }
 
     @Override

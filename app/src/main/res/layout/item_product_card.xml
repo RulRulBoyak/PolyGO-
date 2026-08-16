@@ -40,7 +40,7 @@
             android:background="@drawable/bg_favorite_button"
             android:contentDescription="Add to favorites"
             android:padding="8dp"
-            android:src="@android:drawable/btn_star_big_off"
+            android:src="@drawable/selector_favorite"
             app:layout_constraintEnd_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="@id/imageView"
             app:tint="@color/pks_blue" />

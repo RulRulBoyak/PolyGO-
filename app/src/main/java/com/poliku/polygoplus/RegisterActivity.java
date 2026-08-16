@@ -16,6 +16,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         AppDataStore.initialize(this);
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+
         findViewById(R.id.btnRegisterAction).setOnClickListener(v -> {
             String name = text(R.id.etFullName); String studentId = text(R.id.etMatrixNo); String email = text(R.id.etEmail); String password = text(R.id.etPassword);
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(studentId) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) { Toast.makeText(this, "Complete all fields", Toast.LENGTH_SHORT).show(); return; }
