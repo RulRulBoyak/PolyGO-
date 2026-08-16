@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
+        com.poliku.polygoplus.data.AppDataStore.initialize(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -27,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Show splash for 2 seconds then transition to MainActivity
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, com.poliku.polygoplus.data.AppDataStore.isLoggedIn(this) ? HomeActivity.class : MainActivity.class);
             startActivity(intent);
             finish();
         }, 2000);

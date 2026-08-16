@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.poliku.polygoplus.R;
+import com.poliku.polygoplus.ChatActivity;
+import com.poliku.polygoplus.SearchActivity;
+import com.poliku.polygoplus.data.AppDataStore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +35,12 @@ public class MessagesFragment extends androidx.fragment.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.rvMessages);
 
+        AppDataStore.initialize(requireContext());
         seedMessages();
         adapter = new MessageAdapter(messages);
         recyclerView.setAdapter(adapter);
 
-        view.findViewById(R.id.buttonCompose).setOnClickListener(v ->
-                Toast.makeText(requireContext(), "New message coming soon", Toast.LENGTH_SHORT).show());
+        view.findViewById(R.id.buttonCompose).setOnClickListener(v -> startActivity(new android.content.Intent(requireContext(), SearchActivity.class)));
 
         TextView search = view.findViewById(R.id.editTextMessageSearch);
         search.addTextChangedListener(new TextWatcher() {
@@ -55,19 +58,18 @@ public class MessagesFragment extends androidx.fragment.app.Fragment {
 
     private void seedMessages() {
         messages.clear();
-        messages.add(new Message("AM", "Aina Mahmud", "Is the study table still available?", "Now", true));
-        messages.add(new Message("RK", "Ryan Koh", "Thanks, I can meet you near campus.", "12m", false));
-        messages.add(new Message("NS", "Nur Syafiqah", "I have sent the details for the service.", "1h", true));
-        messages.add(new Message("JT", "Jason Tan", "Can you share a few more photos?", "Yesterday", false));
-        messages.add(new Message("LH", "Liam Harrison", "Your offer was accepted. Great deal!", "Mon", false));
+        for (AppDataStore.ThreadRecord thread : AppDataStore.getThreads(requireContext())) {
+            messages.add(new Message(thread.id, thread.name, thread.preview, "", false));
+        }
     }
 
     private static class Message {
-        final String initials, sender, preview, time;
+        final String id, initials, sender, preview, time;
         final boolean unread;
-        Message(String initials, String sender, String preview, String time, boolean unread) {
-            this.initials = initials; this.sender = sender; this.preview = preview; this.time = time; this.unread = unread;
+        Message(String id, String sender, String preview, String time, boolean unread) {
+            this.id = id; this.initials = initialsFor(sender); this.sender = sender; this.preview = preview; this.time = time; this.unread = unread;
         }
+        private static String initialsFor(String name) { String[] parts=name.trim().split("\\s+"); if(parts.length==1)return parts[0].substring(0,Math.min(2,parts[0].length())).toUpperCase(Locale.ROOT); return (parts[0].substring(0,1)+parts[parts.length-1].substring(0,1)).toUpperCase(Locale.ROOT); }
     }
 
     private static class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Holder> {
@@ -91,7 +93,7 @@ public class MessagesFragment extends androidx.fragment.app.Fragment {
             h.avatar.setText(m.initials); h.sender.setText(m.sender); h.preview.setText(m.preview); h.time.setText(m.time);
             h.sender.setTextColor(Color.parseColor(m.unread ? "#222222" : "#717171"));
             h.unread.setVisibility(m.unread ? View.VISIBLE : View.GONE);
-            h.itemView.setOnClickListener(v -> Toast.makeText(v.getContext(), "Opening chat with " + m.sender, Toast.LENGTH_SHORT).show());
+            h.itemView.setOnClickListener(v -> { android.content.Intent intent = new android.content.Intent(v.getContext(), ChatActivity.class); intent.putExtra(ChatActivity.EXTRA_THREAD_ID, m.id); v.getContext().startActivity(intent); });
         }
         @Override public int getItemCount() { return visibleMessages.size(); }
         static class Holder extends RecyclerView.ViewHolder {

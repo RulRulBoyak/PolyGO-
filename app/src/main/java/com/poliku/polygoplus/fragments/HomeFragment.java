@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,9 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.poliku.polygoplus.R;
 import com.poliku.polygoplus.SearchActivity;
+import com.poliku.polygoplus.AccountActivity;
+import com.poliku.polygoplus.ProductDetailActivity;
+import com.poliku.polygoplus.data.AppDataStore;
+import com.poliku.polygoplus.data.ProductCardAdapter;
 import com.poliku.polygoplus.databinding.FragmentHomeBinding;
 import com.poliku.polygoplus.databinding.ItemCategoryBinding;
-import com.poliku.polygoplus.databinding.ItemProductCardBinding;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        AppDataStore.initialize(requireContext());
         setupHeader();
         setupCategories();
         setupProducts();
@@ -43,9 +45,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupHeader() {
-        // Mock profile click
-        binding.ivProfilePic.setOnClickListener(v -> 
-            Toast.makeText(requireContext(), "Opening profile settings...", Toast.LENGTH_SHORT).show());
+        binding.ivProfilePic.setOnClickListener(v -> startActivity(new Intent(requireContext(), AccountActivity.class)));
     }
 
     private void setupCategories() {
@@ -61,21 +61,18 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupProducts() {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Modern Sofa", "Furniture Store", "RM 180", "4.9", "0.4 km away", R.drawable.bg_product_furniture));
-        products.add(new Product("Gaming Laptop", "Tech World", "RM 2,450", "4.8", "0.8 km away", R.drawable.bg_product_electronics));
-        products.add(new Product("Running Shoes", "Sport Center", "RM 95", "4.7", "1.1 km away", R.drawable.bg_product_fashion));
-        products.add(new Product("Coffee Maker", "Home Kitchen", "RM 65", "4.9", "0.6 km away", R.drawable.bg_product_home));
-        products.add(new Product("Wireless Earbuds", "Sound Box", "RM 120", "4.6", "1.4 km away", R.drawable.bg_product_electronics));
-        products.add(new Product("Desk Lamp", "Office Pro", "RM 38", "4.8", "0.9 km away", R.drawable.bg_product_home));
-
         binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.recyclerViewProducts.setAdapter(new ProductAdapter(products));
+        binding.recyclerViewProducts.setAdapter(new ProductCardAdapter(AppDataStore.getListings(requireContext()), (adapter, product) -> {
+            Intent intent = new Intent(requireContext(), ProductDetailActivity.class);
+            intent.putExtra(ProductDetailActivity.EXTRA_LISTING_ID, product.id);
+            startActivity(intent);
+        }));
     }
 
     private void setupSearchActions() {
         View.OnClickListener openSearch = v -> startActivity(new Intent(requireContext(), SearchActivity.class));
         binding.searchBarCard.setOnClickListener(openSearch);
+        binding.btnExploreNow.setOnClickListener(openSearch);
     }
 
     @Override
@@ -83,8 +80,6 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-    // --- Mock Data Models ---
 
     public static class Category {
         String name;
@@ -96,25 +91,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public static class Product {
-        String title;
-        String seller;
-        String price;
-        String rating;
-        String distance;
-        int imageRes;
-
-        Product(String title, String seller, String price, String rating, String distance, int imageRes) {
-            this.title = title;
-            this.seller = seller;
-            this.price = price;
-            this.rating = rating;
-            this.distance = distance;
-            this.imageRes = imageRes;
-        }
-    }
-
-    // --- Adapters ---
+    // --- Category adapter ---
 
     private static class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
         private final List<Category> categories;
@@ -135,6 +112,11 @@ public class HomeFragment extends Fragment {
             Category category = categories.get(position);
             holder.binding.textViewCategoryName.setText(category.name);
             holder.binding.imageViewCategory.setImageResource(category.iconRes);
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), SearchActivity.class);
+                intent.putExtra(SearchActivity.EXTRA_CATEGORY, category.name);
+                v.getContext().startActivity(intent);
+            });
         }
 
         @Override
@@ -151,51 +133,4 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private static class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-        private final List<Product> products;
-
-        ProductAdapter(List<Product> products) {
-            this.products = products;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemProductCardBinding binding = ItemProductCardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Product product = products.get(position);
-            holder.binding.textViewTitle.setText(product.title);
-            holder.binding.textViewPrice.setText(product.price);
-            holder.binding.textViewRating.setText(product.rating);
-            holder.binding.textViewDistance.setText(product.distance);
-            holder.binding.imageView.setImageResource(product.imageRes);
-            
-            holder.binding.buttonFavorite.setOnClickListener(v -> {
-                v.setSelected(!v.isSelected());
-                v.animate()
-                        .scaleX(v.isSelected() ? 1.14f : 1f)
-                        .scaleY(v.isSelected() ? 1.14f : 1f)
-                        .setDuration(120L)
-                        .withEndAction(() -> v.animate().scaleX(1f).scaleY(1f).setDuration(120L).start())
-                        .start();
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return products.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            ItemProductCardBinding binding;
-            ViewHolder(ItemProductCardBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-        }
-    }
 }

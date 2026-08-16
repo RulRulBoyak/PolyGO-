@@ -4,22 +4,28 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.poliku.polygoplus.data.AppDataStore;
 
 public class EditProductActivity extends AppCompatActivity {
 
     private TextInputEditText etPrice;
     private double currentPrice = 0.0;
+    private String selectedImageUri = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_product);
+        AppDataStore.initialize(this);
 
         setupToolbar();
         setupPriceAdjuster();
         setupCategoryDropdown();
+        findViewById(R.id.btnAddPhoto).setOnClickListener(v -> { Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT); intent.setType("image/*"); intent.addCategory(Intent.CATEGORY_OPENABLE); startActivityForResult(intent, 41); });
         setupPublishAction();
     }
 
@@ -56,10 +62,19 @@ public class EditProductActivity extends AppCompatActivity {
 
     private void setupPublishAction() {
         findViewById(R.id.btnSaveProduct).setOnClickListener(v -> {
-            Toast.makeText(this, "Listing Published Successfully!", Toast.LENGTH_LONG).show();
+            String title = value(R.id.etProductName); String category = ((AutoCompleteTextView)findViewById(R.id.autoCompleteCategory)).getText().toString().trim(); String price = value(R.id.etPrice); String description = value(R.id.etDescription);
+            if (selectedImageUri.isEmpty()) { Toast.makeText(this, "Add at least one photo", Toast.LENGTH_SHORT).show(); return; }
+            if (title.isEmpty() || category.isEmpty() || price.isEmpty() || description.isEmpty()) { Toast.makeText(this, "Complete the listing details", Toast.LENGTH_SHORT).show(); return; }
+            try { if (Double.parseDouble(price) <= 0) { Toast.makeText(this, "Price must be greater than zero", Toast.LENGTH_SHORT).show(); return; } } catch (NumberFormatException e) { Toast.makeText(this, "Enter a valid price", Toast.LENGTH_SHORT).show(); return; }
+            AppDataStore.addUserListing(this, title, category, price, description, selectedImageUri);
+            Toast.makeText(this, "Listing published", Toast.LENGTH_LONG).show();
             finish();
         });
     }
+
+    private String value(int id) { TextInputEditText input = findViewById(id); return input.getText() == null ? "" : input.getText().toString().trim(); }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) { super.onActivityResult(requestCode, resultCode, data); if (requestCode == 41 && resultCode == RESULT_OK && data != null && data.getData() != null) { selectedImageUri = data.getData().toString(); ImageView image = findViewById(R.id.imgSelectedPhoto); image.setImageURI(data.getData()); image.setVisibility(android.view.View.VISIBLE); findViewById(R.id.selectedPhotoCard).setVisibility(android.view.View.VISIBLE); } }
 
     @Override
     public void finish() {

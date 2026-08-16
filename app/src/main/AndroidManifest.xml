@@ -29,6 +29,14 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".EditProductActivity" />
+        <activity android:name=".ProductDetailActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".SavedItemsActivity" />
+        <activity android:name=".MyListingsActivity" />
+        <activity android:name=".TransactionsActivity" />
+        <activity android:name=".NotificationsActivity" />
+        <activity android:name=".VerificationActivity" />
+        <activity android:name=".HelpActivity" />
     </application>
 
 </manifest>

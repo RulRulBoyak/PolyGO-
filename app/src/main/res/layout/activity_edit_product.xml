@@ -61,6 +61,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnAddPhoto"
+                    android:clickable="true"
+                    android:focusable="true"
                     style="@style/Widget.PolyGo.Card"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
@@ -90,18 +92,21 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Placeholder for existing photo -->
+                <!-- Selected photo preview -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/selectedPhotoCard"
+                    android:visibility="gone"
                     style="@style/Widget.PolyGo.Card"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginStart="12dp"
                     app:strokeWidth="1dp">
                     <ImageView
+                        android:id="@+id/imgSelectedPhoto"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/bg_product_electronics" />
+                        android:visibility="gone" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
