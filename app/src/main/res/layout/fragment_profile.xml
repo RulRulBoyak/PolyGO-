@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/profile_main"
     android:background="@color/white">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -169,44 +171,7 @@
                     app:tint="@color/airbnb_ink" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_200" />
-
             <!-- Menu: FAQs -->
-            <LinearLayout
-                android:id="@+id/menuFaqs"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_help"
-                    app:tint="@color/airbnb_muted" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:text="FAQs"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="@color/airbnb_ink"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@android:drawable/ic_media_play"
-                    app:tint="@color/airbnb_ink" />
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -215,10 +180,13 @@
 
             <!-- Menu: Push Notification -->
             <LinearLayout
+                android:id="@+id/menuNotifications"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -231,8 +199,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
+                    android:text="Notifications"
+                    android:textColor="@color/airbnb_ink"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/airbnb_ink" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:tint="@color/airbnb_muted" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:text="Push Notification"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="@color/airbnb_ink"
                     android:textStyle="bold" />
 
@@ -280,18 +275,7 @@
                 <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="Transactions" android:textColor="@color/airbnb_ink" android:textStyle="bold" />
                 <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="@color/airbnb_ink" />
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/menuNotifications"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_popup_reminder" app:tint="@color/airbnb_muted" />
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="Notifications" android:textColor="@color/airbnb_ink" android:textStyle="bold" />
-                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="@color/airbnb_ink" />
-            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/menuVerification"
                 android:layout_width="match_parent"
@@ -300,9 +284,65 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical">
-                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_lock_idle_lock" app:tint="@color/airbnb_muted" />
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="Campus verification" android:textColor="@color/airbnb_ink" android:textStyle="bold" />
-                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="@color/airbnb_ink" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_lock_idle_lock"
+                    app:tint="@color/airbnb_muted" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Campus verification"
+                    android:textColor="@color/airbnb_ink"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/airbnb_ink" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_200" />
+
+            <LinearLayout
+                android:id="@+id/menuFaqs"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_help"
+                    app:tint="@color/airbnb_muted" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="FAQs"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="@color/airbnb_ink"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/airbnb_ink" />
             </LinearLayout>
 
             <!-- Support Card -->

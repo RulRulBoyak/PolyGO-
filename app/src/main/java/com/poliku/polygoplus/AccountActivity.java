@@ -23,7 +23,8 @@ public class AccountActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
         
         findViewById(R.id.btnUpdateProfile).setOnClickListener(v -> {
-            String first = value(R.id.etFirstName); String last = value(R.id.etLastName); String email = value(R.id.etEmail); String mobile = value(R.id.etMobileNo);
+            String first = value(R.id.etFirstName);
+            String last = value(R.id.etLastName); String email = value(R.id.etEmail); String mobile = value(R.id.etMobileNo);
             if (first.isEmpty() || last.isEmpty() || email.isEmpty()) { Toast.makeText(this, "Complete your profile", Toast.LENGTH_SHORT).show(); return; }
             AppDataStore.updateProfile(this, first + " " + last, email, mobile);
             Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show();

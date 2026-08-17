@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_nav_home"
@@ -8,6 +9,7 @@
         android:id="@+id/nav_explore"
         android:icon="@drawable/ic_nav_explore"
         android:title="Explore" />
+    <item />
     <item
         android:id="@+id/nav_messages"
         android:icon="@drawable/ic_nav_messages"

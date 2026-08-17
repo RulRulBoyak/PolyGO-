@@ -7,6 +7,10 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.poliku.polygoplus.data.AppDataStore;
 
@@ -21,6 +25,18 @@ public class EditProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_product);
         AppDataStore.initialize(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.topBar), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(0, v.getPaddingTop() + systemBars.top, 0, 0);
+            return insets;
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.bottomBar), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(0, 0, 0, v.getPaddingBottom() + systemBars.bottom);
+            return insets;
+        });
 
         setupToolbar();
         setupPriceAdjuster();

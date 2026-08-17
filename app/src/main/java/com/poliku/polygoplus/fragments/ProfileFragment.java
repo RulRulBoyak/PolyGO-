@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import com.poliku.polygoplus.AccountActivity;
 import com.poliku.polygoplus.MainActivity;
@@ -34,9 +37,13 @@ public class ProfileFragment extends Fragment {
         AppDataStore.initialize(requireContext());
         ((android.widget.TextView)view.findViewById(R.id.tvUserName)).setText(AppDataStore.userName(requireContext()));
 
-        view.findViewById(R.id.menuUserProfile).setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), AccountActivity.class));
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        view.findViewById(R.id.headerProfile).setOnClickListener(v -> profileIntent());
+        view.findViewById(R.id.menuUserProfile).setOnClickListener(v -> profileIntent());
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.profile_main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
 
         view.findViewById(R.id.menuChangePassword).setOnClickListener(v -> {
@@ -69,5 +76,10 @@ public class ProfileFragment extends Fragment {
         });
 
         // Other menus can be wired here similarly
+    }
+
+    public void profileIntent() {
+        startActivity(new Intent(requireContext(), AccountActivity.class));
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

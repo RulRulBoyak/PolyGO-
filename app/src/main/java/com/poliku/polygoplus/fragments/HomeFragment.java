@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +45,12 @@ public class HomeFragment extends Fragment {
         setupCategories();
         setupProducts();
         setupSearchActions();
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.home_top), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top + v.getPaddingTop(), v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
     }
 
     private void setupHeader() {

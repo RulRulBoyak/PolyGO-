@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
@@ -39,6 +42,12 @@ public class MessagesFragment extends androidx.fragment.app.Fragment {
         seedMessages();
         adapter = new MessageAdapter(messages);
         recyclerView.setAdapter(adapter);
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.message_main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         view.findViewById(R.id.buttonCompose).setOnClickListener(v -> startActivity(new android.content.Intent(requireContext(), SearchActivity.class)));
 

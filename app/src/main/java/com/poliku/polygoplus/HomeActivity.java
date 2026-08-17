@@ -2,7 +2,12 @@ package com.poliku.polygoplus;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.poliku.polygoplus.fragments.HomeFragment;
@@ -16,12 +21,25 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        EdgeToEdge.enable(this);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         
         // Set default fragment
         loadFragment(new HomeFragment());
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home_main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, 0, systemBars.right, 0);
+            return insets;
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.bottomAppBar), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets.CONSUMED;
+        });
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;

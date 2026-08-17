@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/edit_product_main"
     android:background="@color/white">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -374,6 +376,7 @@
 
     <!-- Bottom Publish Action -->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -384,13 +387,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="32dp"
             android:padding="16dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveProduct"
                 style="@style/Widget.PolyGo.Button"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="55dp"
+                android:layout_marginBottom="8dp"
                 android:text="Publish Listing"
                 android:textAllCaps="false"
                 android:textSize="16sp"
