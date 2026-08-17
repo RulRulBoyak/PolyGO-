@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Airbnb Palette -->
-    <color name="airbnb_coral">#FF385C</color>
+    <!-- Airbnb Palette (accent shifted to blue) -->
+    <color name="airbnb_coral">#1E88E5</color>
     <color name="airbnb_ink">#222222</color>
     <color name="airbnb_muted">#717171</color>
     <color name="airbnb_border">#DDDDDD</color>
