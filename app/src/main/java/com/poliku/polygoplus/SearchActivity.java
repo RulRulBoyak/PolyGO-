@@ -20,8 +20,10 @@ import com.poliku.polygoplus.data.AppDataStore;
 import com.poliku.polygoplus.data.ProductCardAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class SearchActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORY = "category";
@@ -49,15 +51,15 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         all.addAll(AppDataStore.getListings(this));
-        String[] categories = {"All categories", "Food", "Drink", "Tech", "Electronics", "Fashion", "Books", "Repair", "Home", "Services"};
-        category.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories));
-        String initial = getIntent().getStringExtra(EXTRA_CATEGORY);
-        if (initial != null) {
-            search.setText(initial);
-            for (int i = 0; i < categories.length; i++)
-                if (categories[i].equalsIgnoreCase(initial)) category.setSelection(i);
+        List<String> categoryList = new ArrayList<>();
+        categoryList.add("All categories");
+        Set<String> seen = new HashSet<>();
+        for (AppDataStore.ProductRecord p : all) {
+            if (seen.add(p.category)) categoryList.add(p.category);
         }
-        RecyclerView rv = findViewById(R.id.rvSearchResults);
+        ArrayAdapter<String> catAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryList);
+        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(catAdapter);RecyclerView rv = findViewById(R.id.rvSearchResults);
         rv.setLayoutManager(new GridLayoutManager(this, 2));
         search.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int st, int c, int a) {
