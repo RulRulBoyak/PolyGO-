@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <LinearLayout
-        android:id="@+id/searchHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -65,31 +63,25 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchResults"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="140dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSearchResults"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingHorizontal="8dp"
-            android:paddingTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2" />
-
-        <TextView
-            android:id="@+id/tvEmptySearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="32dp"
-            android:text="No listings match your search."
-            android:textColor="@color/airbnb_muted"
-            android:textSize="16sp"
-            android:visibility="gone" />
-    </FrameLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvEmptySearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="No listings match your search."
+        android:textColor="@color/airbnb_muted"
+        android:textSize="16sp"
+        android:visibility="gone" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
