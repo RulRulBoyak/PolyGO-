@@ -20,12 +20,12 @@ import com.poliku.polygoplus.data.ProductCardAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MarketplaceFragment extends Fragment {
+public class ExploreFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_marketplace, container, false);
+        View view = inflater.inflate(R.layout.fragment_explore, container, false);
         AppDataStore.initialize(requireContext());
         RecyclerView list = view.findViewById(R.id.rvExplore);
 

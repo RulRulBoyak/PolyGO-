@@ -20,9 +20,10 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/white"
         app:fabAlignmentMode="center"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="30dp"
-        app:fabCradleVerticalOffset="8dp">
+        app:fabAnimationMode="slide"
+        app:fabCradleMargin="32dp"
+        app:fabCradleRoundedCornerRadius="24dp"
+        app:fabCradleVerticalOffset="0dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
@@ -30,6 +31,8 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             app:elevation="0dp"
+            app:itemRippleColor="@android:color/transparent"
+            app:itemActiveIndicatorStyle="@null"
             app:itemIconTint="@color/nav_item_color"
             app:itemTextColor="@color/nav_item_color"
             app:labelVisibilityMode="labeled"
@@ -39,12 +42,13 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:contentDescription="Add Product"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/airbnb_coral"
         app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="center"
         app:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
