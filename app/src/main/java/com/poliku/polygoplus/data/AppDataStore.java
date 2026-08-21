@@ -302,6 +302,16 @@ public final class AppDataStore {
     }
 
     public static List<NotificationRecord> getNotifications(Context context) { List<NotificationRecord> result = new ArrayList<>(); JSONArray list = array(context, KEY_NOTIFICATIONS); for (int i = list.length()-1; i >= 0; i--) try { result.add(NotificationRecord.fromJson(list.getJSONObject(i))); } catch (JSONException ignored) { } return result; }
+    public static int getUnreadNotificationCount(Context context) { int count=0; for (NotificationRecord n : getNotifications(context)) if (!n.read) count++; return count; }
+    public static void markNotificationRead(Context context, String id) {
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        for (int i=0;i<list.length();i++) try { JSONObject o=list.getJSONObject(i); if (id.equals(o.optString("id"))) { o.put("read", true); saveArray(context, KEY_NOTIFICATIONS, list); return; } } catch (JSONException ignored) { }
+    }
+    public static void markNotificationsRead(Context context) {
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        for (int i=0;i<list.length();i++) try { list.getJSONObject(i).put("read", true); } catch (JSONException ignored) { }
+        saveArray(context, KEY_NOTIFICATIONS, list);
+    }
     public static boolean isVerified(Context context) { return prefs(context).getBoolean(KEY_VERIFICATION, false); }
     public static boolean verifyAccount(Context context, String studentId, String email) {
         try { JSONObject user = new JSONObject(prefs(context).getString(KEY_USER, "{}")); boolean valid = studentId.equalsIgnoreCase(user.optString("studentId")) && email.equalsIgnoreCase(user.optString("email")); if (valid) setVerified(context); return valid; } catch (JSONException e) { return false; }
@@ -330,5 +340,11 @@ public final class AppDataStore {
             return new ThreadRecord(o.optString("id"),o.optString("listingId"),o.optString("name"),p,m,o.optBoolean("unread",false),time);
         }
     }
-    public static final class NotificationRecord { public final String title, body; public NotificationRecord(String title,String body){this.title=title;this.body=body;} static NotificationRecord fromJson(JSONObject o){return new NotificationRecord(o.optString("title"),o.optString("body"));} }
+    public static final class NotificationRecord {
+        public final String id, title, body;
+        public final long time;
+        public final boolean read;
+        public NotificationRecord(String id, String title, String body, long time, boolean read){this.id=id;this.title=title;this.body=body;this.time=time;this.read=read;}
+        static NotificationRecord fromJson(JSONObject o){return new NotificationRecord(o.optString("id"),o.optString("title"),o.optString("body"),o.optLong("time",0),o.optBoolean("read",false));}
+    }
 }
