@@ -32,7 +32,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> { AppDataStore.toggleFavorite(this, product.id); v.setSelected(AppDataStore.isFavorite(this, product.id)); Toast.makeText(this, v.isSelected()?"Saved to your items":"Removed from saved items", Toast.LENGTH_SHORT).show(); });
         MaterialButton message = findViewById(R.id.btnMessageSeller);
         if (product.owner) { message.setText("This is your listing"); message.setEnabled(false); findViewById(R.id.btnMakeOffer).setEnabled(false); MaterialButton sold = findViewById(R.id.btnMarkSold); sold.setVisibility(android.view.View.VISIBLE); sold.setEnabled(product.available); sold.setOnClickListener(v -> { AppDataStore.markSold(this, product.id); Toast.makeText(this, "Listing marked as sold", Toast.LENGTH_SHORT).show(); finish(); }); }
-        message.setOnClickListener(v -> { String id = AppDataStore.addThread(this, product.id, product.seller, "Hi, I am interested in your " + product.title + "."); Intent i = new Intent(this, ChatActivity.class); i.putExtra(ChatActivity.EXTRA_THREAD_ID, id); startActivity(i); });
+        message.setOnClickListener(v -> { String id = AppDataStore.getOrCreateThread(this, product.id, product.seller, "Hi, I am interested in your " + product.title + "."); Intent i = new Intent(this, ChatActivity.class); i.putExtra(ChatActivity.EXTRA_THREAD_ID, id); startActivity(i); });
         findViewById(R.id.btnMakeOffer).setOnClickListener(v -> showOfferDialog());
     }
     private void showOfferDialog() {

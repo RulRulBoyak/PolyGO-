@@ -48,14 +48,19 @@ public class SearchActivity extends AppCompatActivity {
             return insets;
         });
 
-        all.addAll(AppDataStore.getListings(this));
         String[] categories = {"All categories", "Food", "Drink", "Tech", "Electronics", "Fashion", "Books", "Repair", "Home", "Services"};
         category.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories));
         String initial = getIntent().getStringExtra(EXTRA_CATEGORY);
         if (initial != null) {
-            search.setText(initial);
-            for (int i = 0; i < categories.length; i++)
-                if (categories[i].equalsIgnoreCase(initial)) category.setSelection(i);
+            boolean isCategoryShortcut = false;
+            for (int i = 0; i < categories.length; i++) {
+                if (categories[i].equalsIgnoreCase(initial)) {
+                    category.setSelection(i);
+                    isCategoryShortcut = true;
+                    break;
+                }
+            }
+            if (!isCategoryShortcut) search.setText(initial);
         }
         RecyclerView rv = findViewById(R.id.rvSearchResults);
         rv.setLayoutManager(new GridLayoutManager(this, 2));
@@ -78,6 +83,17 @@ public class SearchActivity extends AppCompatActivity {
             public void onNothingSelected(android.widget.AdapterView<?> p) {
             }
         });
+        reloadListings();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        if (search != null) reloadListings();
+    }
+
+    private void reloadListings() {
+        all.clear();
+        all.addAll(AppDataStore.getListings(this));
         filter();
     }
 
@@ -87,8 +103,9 @@ public class SearchActivity extends AppCompatActivity {
         String cat = category.getSelectedItem() == null ? "All categories" : category.getSelectedItem().toString();
         List<AppDataStore.ProductRecord> filtered = new ArrayList<>();
         for (AppDataStore.ProductRecord p : all) {
-            boolean text = q.isEmpty() || p.title.toLowerCase(Locale.ROOT).contains(q) || p.seller.toLowerCase(Locale.ROOT).contains(q) || p.description.toLowerCase(Locale.ROOT).contains(q);
-            boolean categoryMatch = cat.startsWith("All") || p.category.equalsIgnoreCase(cat);
+            String searchable = (p.title + " " + p.seller + " " + p.description + " " + p.category + " " + p.distance).toLowerCase(Locale.ROOT);
+            boolean text = q.isEmpty() || searchable.contains(q);
+            boolean categoryMatch = categoryMatches(p.category, cat);
             if (text && categoryMatch) filtered.add(p);
         }
         adapter = new ProductCardAdapter(filtered, (a, p) -> {
@@ -100,5 +117,15 @@ public class SearchActivity extends AppCompatActivity {
         if (rv != null) rv.setAdapter(adapter);
         if (count != null) count.setText(filtered.size() + " listings");
         if (empty != null) empty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean categoryMatches(String productCategory, String selectedCategory) {
+        if (selectedCategory == null || selectedCategory.toLowerCase(Locale.ROOT).startsWith("all")) return true;
+        String product = productCategory == null ? "" : productCategory.toLowerCase(Locale.ROOT);
+        String selected = selectedCategory.toLowerCase(Locale.ROOT);
+        if (selected.equals("tech")) return product.contains("tech") || product.contains("electronic");
+        if (selected.equals("repair")) return product.contains("repair") || product.contains("service");
+        if (selected.equals("home")) return product.contains("home") || product.contains("furniture");
+        return product.equals(selected) || product.contains(selected) || selected.contains(product);
     }
 }

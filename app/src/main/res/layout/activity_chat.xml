@@ -1,14 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/white">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="64dp" android:gravity="center_vertical" android:paddingHorizontal="12dp">
-        <ImageButton android:id="@+id/btnBack" android:layout_width="44dp" android:layout_height="44dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="Back" android:src="@android:drawable/ic_menu_revert" app:tint="@color/airbnb_ink" />
-        <TextView android:id="@+id/chatTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:textColor="@color/airbnb_ink" android:textSize="18sp" android:textStyle="bold" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/airbnb_ink" />
+
+        <TextView
+            android:id="@+id/chatTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/airbnb_ink"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
-        <TextView android:id="@+id/chatMessages" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:textColor="@color/airbnb_ink" android:textSize="15sp" />
-    </ScrollView>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:padding="12dp" android:orientation="horizontal">
-        <EditText android:id="@+id/etMessage" android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:hint="Write a message" android:inputType="textCapSentences" android:paddingHorizontal="14dp" />
-        <com.google.android.material.button.MaterialButton android:id="@+id/btnSend" android:layout_width="wrap_content" android:layout_height="52dp" android:layout_marginStart="8dp" android:text="Send" android:textAllCaps="false" app:cornerRadius="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingVertical="12dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp">
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search_filter"
+            android:hint="Write a message"
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/airbnb_ink"
+            android:textColorHint="@color/airbnb_muted" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:text="Send"
+            android:textAllCaps="false"
+            app:cornerRadius="16dp" />
     </LinearLayout>
 </LinearLayout>

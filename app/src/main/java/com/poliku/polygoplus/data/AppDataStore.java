@@ -39,6 +39,19 @@ public final class AppDataStore {
 
     public static void initialize(Context context) {
         SharedPreferences p = prefs(context);
+        
+        // Seed default user if none exists
+        if (!p.contains(KEY_USER)) {
+            try {
+                JSONObject user = new JSONObject();
+                user.put("name", "Amirul");
+                user.put("studentId", "05DIT24F1029");
+                user.put("email", "amirul@pks.edu.my");
+                user.put("password", "password123");
+                p.edit().putString(KEY_USER, user.toString()).apply();
+            } catch (JSONException ignored) {}
+        }
+
         if (p.getBoolean(KEY_SEEDED, false)) {
             // Self-repair: Ensure favorites is a Set if it was previously a String.
             favoriteIds(context);
@@ -92,6 +105,14 @@ public final class AppDataStore {
     public static boolean hasAccount(Context context) { return prefs(context).contains(KEY_USER); }
     public static boolean isLoggedIn(Context context) { return prefs(context).getBoolean("loggedIn", false); }
     public static void logout(Context context) { prefs(context).edit().putBoolean("loggedIn", false).apply(); }
+
+    /** Stores the API session locally so existing screens can read the signed-in user. */
+    public static void saveRemoteSession(Context context, JSONObject user) {
+        prefs(context).edit()
+                .putString(KEY_USER, user.toString())
+                .putBoolean("loggedIn", true)
+                .apply();
+    }
 
     public static boolean register(Context context, String name, String studentId, String email, String password) {
         if (hasAccount(context)) return false;
@@ -211,10 +232,24 @@ public final class AppDataStore {
     public static String addThread(Context context, String listingId, String otherName, String initialMessage) {
         JSONArray threads = array(context, KEY_THREADS);
         try {
-            JSONObject thread = new JSONObject(); String id = UUID.randomUUID().toString(); thread.put("id", id); thread.put("listingId", listingId); thread.put("name", otherName); thread.put("unread", false);
-            JSONArray messages = new JSONArray(); JSONObject message = new JSONObject(); message.put("sender", userName(context)); message.put("text", initialMessage); message.put("time", System.currentTimeMillis()); messages.put(message); thread.put("messages", messages); threads.put(thread); saveArray(context, KEY_THREADS, threads);
+            JSONObject thread = new JSONObject();
+            String id = UUID.randomUUID().toString();
+            long now = System.currentTimeMillis();
+            thread.put("id", id); thread.put("listingId", listingId); thread.put("name", otherName); thread.put("unread", false);
+            JSONArray messages = new JSONArray();
+            JSONObject message = new JSONObject();
+            message.put("sender", userName(context)); message.put("mine", true); message.put("text", initialMessage); message.put("time", now);
+            messages.put(message); thread.put("messages", messages); thread.put("lastMessageTime", now);
+            threads.put(thread); saveArray(context, KEY_THREADS, threads);
             return id;
         } catch (JSONException ignored) { return null; }
+    }
+
+    public static String getOrCreateThread(Context context, String listingId, String otherName, String initialMessage) {
+        for (ThreadRecord thread : getThreads(context)) {
+            if (listingId != null && listingId.equals(thread.listingId) && otherName.equals(thread.name)) return thread.id;
+        }
+        return addThread(context, listingId, otherName, initialMessage);
     }
 
     public static List<ThreadRecord> getThreads(Context context) {
@@ -225,9 +260,30 @@ public final class AppDataStore {
 
     public static ThreadRecord getThread(Context context, String id) { for (ThreadRecord t : getThreads(context)) if (t.id.equals(id)) return t; return null; }
 
+    public static void markThreadRead(Context context, String threadId) {
+        JSONArray threads = array(context, KEY_THREADS);
+        for (int i = 0; i < threads.length(); i++) try {
+            JSONObject thread = threads.getJSONObject(i);
+            if (threadId.equals(thread.optString("id"))) {
+                thread.put("unread", false);
+                saveArray(context, KEY_THREADS, threads);
+                return;
+            }
+        } catch (JSONException ignored) { }
+    }
+
     public static void sendMessage(Context context, String threadId, String text) {
         JSONArray threads = array(context, KEY_THREADS);
-        for (int i = 0; i < threads.length(); i++) try { JSONObject t = threads.getJSONObject(i); if (threadId.equals(t.optString("id"))) { JSONArray msgs = t.optJSONArray("messages"); if (msgs == null) msgs = new JSONArray(); JSONObject m = new JSONObject(); m.put("sender", userName(context)); m.put("text", text); m.put("time", System.currentTimeMillis()); msgs.put(m); t.put("messages", msgs); saveArray(context, KEY_THREADS, threads); return; } } catch (JSONException ignored) { }
+        for (int i = 0; i < threads.length(); i++) try {
+            JSONObject t = threads.getJSONObject(i);
+            if (threadId.equals(t.optString("id"))) {
+                JSONArray msgs = t.optJSONArray("messages"); if (msgs == null) msgs = new JSONArray();
+                long now = System.currentTimeMillis();
+                JSONObject m = new JSONObject(); m.put("sender", userName(context)); m.put("mine", true); m.put("text", text); m.put("time", now); msgs.put(m);
+                t.put("messages", msgs); t.put("lastMessageTime", now); t.put("unread", false);
+                saveArray(context, KEY_THREADS, threads); return;
+            }
+        } catch (JSONException ignored) { }
     }
 
     public static void addNotification(Context context, String title, String body) {
@@ -259,6 +315,20 @@ public final class AppDataStore {
         static ProductRecord fromJson(JSONObject o) { return new ProductRecord(o.optString("id"), o.optString("title"), o.optString("seller"), o.optString("price"), o.optString("rating"), o.optString("distance"), o.optInt("imageRes", R.drawable.bg_product_home), o.optString("imageUri"), o.optString("category"), o.optString("description"), o.optBoolean("owner"), o.optBoolean("available", true)); }
         JSONObject toJson() throws JSONException { JSONObject o = new JSONObject(); o.put("id",id);o.put("title",title);o.put("seller",seller);o.put("price",price);o.put("rating",rating);o.put("distance",distance);o.put("imageRes",imageRes);o.put("imageUri",imageUri);o.put("category",category);o.put("description",description);o.put("owner",owner);o.put("available",available);return o; }
     }
-    public static final class ThreadRecord { public final String id, listingId, name, preview; public final JSONArray messages; ThreadRecord(String id,String listingId,String name,String preview,JSONArray messages){this.id=id;this.listingId=listingId;this.name=name;this.preview=preview;this.messages=messages;} static ThreadRecord fromJson(JSONObject o){JSONArray m=o.optJSONArray("messages"); if(m==null)m=new JSONArray(); String p=m.length()>0?m.optJSONObject(m.length()-1).optString("text",""):""; return new ThreadRecord(o.optString("id"),o.optString("listingId"),o.optString("name"),p,m);} }
+    public static final class ThreadRecord {
+        public final String id, listingId, name, preview;
+        public final JSONArray messages;
+        public final boolean unread;
+        public final long lastMessageTime;
+        ThreadRecord(String id, String listingId, String name, String preview, JSONArray messages, boolean unread, long lastMessageTime) {
+            this.id=id; this.listingId=listingId; this.name=name; this.preview=preview; this.messages=messages; this.unread=unread; this.lastMessageTime=lastMessageTime;
+        }
+        static ThreadRecord fromJson(JSONObject o) {
+            JSONArray m=o.optJSONArray("messages"); if(m==null)m=new JSONArray();
+            String p=""; long time=o.optLong("lastMessageTime", 0);
+            if(m.length()>0) { JSONObject last=m.optJSONObject(m.length()-1); if(last!=null) { p=last.optString("text",""); if(time==0) time=last.optLong("time",0); } }
+            return new ThreadRecord(o.optString("id"),o.optString("listingId"),o.optString("name"),p,m,o.optBoolean("unread",false),time);
+        }
+    }
     public static final class NotificationRecord { public final String title, body; public NotificationRecord(String title,String body){this.title=title;this.body=body;} static NotificationRecord fromJson(JSONObject o){return new NotificationRecord(o.optString("title"),o.optString("body"));} }
 }
