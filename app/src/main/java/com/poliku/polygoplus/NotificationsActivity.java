@@ -1,8 +1,45 @@
 package com.poliku.polygoplus;
+
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.card.MaterialCardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.poliku.polygoplus.data.AppDataStore;
-public class NotificationsActivity extends AppCompatActivity { @Override protected void onCreate(Bundle b){super.onCreate(b);setContentView(R.layout.activity_notifications);findViewById(R.id.btnBack).setOnClickListener(v->finish());LinearLayout list=findViewById(R.id.notificationList);for(AppDataStore.NotificationRecord n:AppDataStore.getNotifications(this)){MaterialCardView card=new MaterialCardView(this);card.setRadius(16);card.setCardElevation(0);card.setUseCompatPadding(true);TextView text=new TextView(this);text.setPadding(20,18,20,18);text.setText(n.title+"\n"+n.body);text.setTextSize(15);card.addView(text);list.addView(card);}}}
+import com.poliku.polygoplus.data.NotificationAdapter;
+
+public class NotificationsActivity extends AppCompatActivity {
+    private NotificationAdapter adapter;
+    private TextView empty;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notifications);
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        empty=findViewById(R.id.tvEmptyNotifications);
+        RecyclerView list=findViewById(R.id.notificationList);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        adapter=new NotificationAdapter(notification -> {
+            AppDataStore.markNotificationRead(this, notification.id);
+            loadNotifications();
+        });
+        list.setAdapter(adapter);
+        loadNotifications();
+    }
+
+    @Override protected void onResume() { super.onResume(); if(adapter!=null) loadNotifications(); }
+
+    @Override protected void onStop() {
+        super.onStop();
+        AppDataStore.markNotificationsRead(this);
+    }
+
+    private void loadNotifications() {
+        java.util.List<AppDataStore.NotificationRecord> items=AppDataStore.getNotifications(this);
+        adapter.submit(items);
+        empty.setVisibility(items.isEmpty()?View.VISIBLE:View.GONE);
+    }
+}
