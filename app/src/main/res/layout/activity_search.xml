@@ -69,9 +69,9 @@
         android:id="@+id/rvSearchResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="140dp"
         android:clipToPadding="false"
         android:paddingHorizontal="8dp"
-        android:paddingTop="140dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
 

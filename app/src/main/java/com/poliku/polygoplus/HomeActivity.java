@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.poliku.polygoplus.fragments.HomeFragment;
-import com.poliku.polygoplus.fragments.MarketplaceFragment; // We will use this as our 'Explore' fragment
+import com.poliku.polygoplus.fragments.ExploreFragment; // We will use this as our 'Explore' fragment
 import com.poliku.polygoplus.fragments.MessagesFragment;
 import com.poliku.polygoplus.fragments.ProfileFragment;
 
@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 fragment = new HomeFragment();
             } else if (id == R.id.nav_explore) {
-                fragment = new MarketplaceFragment(); // Unified Explore View
+                fragment = new ExploreFragment(); // Unified Explore View
             } else if (id == R.id.nav_messages) {
                 fragment = new MessagesFragment();
             } else if (id == R.id.nav_profile) {

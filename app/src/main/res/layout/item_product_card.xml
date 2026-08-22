@@ -21,8 +21,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:contentDescription="Item image"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_product_electronics"

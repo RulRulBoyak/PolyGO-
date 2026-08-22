@@ -9,7 +9,6 @@
         android:id="@+id/nav_explore"
         android:icon="@drawable/ic_nav_explore"
         android:title="Explore" />
-    <item />
     <item
         android:id="@+id/nav_messages"
         android:icon="@drawable/ic_nav_messages"

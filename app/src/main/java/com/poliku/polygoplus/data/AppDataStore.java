@@ -31,7 +31,8 @@ public final class AppDataStore {
     private static final String KEY_VERIFICATION = "verification";
     private static final String KEY_SEEDED = "seeded";
 
-    private AppDataStore() { }
+    private AppDataStore() {
+    }
 
     private static SharedPreferences prefs(Context context) {
         return context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -39,7 +40,7 @@ public final class AppDataStore {
 
     public static void initialize(Context context) {
         SharedPreferences p = prefs(context);
-        
+
         // Seed default user if none exists
         if (!p.contains(KEY_USER)) {
             try {
@@ -49,7 +50,8 @@ public final class AppDataStore {
                 user.put("email", "amirul@pks.edu.my");
                 user.put("password", "password123");
                 p.edit().putString(KEY_USER, user.toString()).apply();
-            } catch (JSONException ignored) {}
+            } catch (JSONException ignored) {
+            }
         }
 
         if (p.getBoolean(KEY_SEEDED, false)) {
@@ -90,23 +92,37 @@ public final class AppDataStore {
             item.put("available", true);
             item.put("createdAt", System.currentTimeMillis());
             list.put(item);
-        } catch (JSONException ignored) { }
+        } catch (JSONException ignored) {
+        }
     }
 
     private static JSONArray array(Context context, String key) {
-        try { return new JSONArray(prefs(context).getString(key, "[]")); }
-        catch (JSONException e) { return new JSONArray(); }
+        try {
+            return new JSONArray(prefs(context).getString(key, "[]"));
+        } catch (JSONException e) {
+            return new JSONArray();
+        }
     }
 
     private static void saveArray(Context context, String key, JSONArray value) {
         prefs(context).edit().putString(key, value.toString()).apply();
     }
 
-    public static boolean hasAccount(Context context) { return prefs(context).contains(KEY_USER); }
-    public static boolean isLoggedIn(Context context) { return prefs(context).getBoolean("loggedIn", false); }
-    public static void logout(Context context) { prefs(context).edit().putBoolean("loggedIn", false).apply(); }
+    public static boolean hasAccount(Context context) {
+        return prefs(context).contains(KEY_USER);
+    }
 
-    /** Stores the API session locally so existing screens can read the signed-in user. */
+    public static boolean isLoggedIn(Context context) {
+        return prefs(context).getBoolean("loggedIn", false);
+    }
+
+    public static void logout(Context context) {
+        prefs(context).edit().putBoolean("loggedIn", false).apply();
+    }
+
+    /**
+     * Stores the API session locally so existing screens can read the signed-in user.
+     */
     public static void saveRemoteSession(Context context, JSONObject user) {
         prefs(context).edit()
                 .putString(KEY_USER, user.toString())
@@ -118,10 +134,15 @@ public final class AppDataStore {
         if (hasAccount(context)) return false;
         try {
             JSONObject user = new JSONObject();
-            user.put("name", name); user.put("studentId", studentId); user.put("email", email); user.put("password", password);
+            user.put("name", name);
+            user.put("studentId", studentId);
+            user.put("email", email);
+            user.put("password", password);
             prefs(context).edit().putString(KEY_USER, user.toString()).putBoolean("loggedIn", true).apply();
             return true;
-        } catch (JSONException e) { return false; }
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
     public static boolean login(Context context, String studentId, String password) {
@@ -130,24 +151,54 @@ public final class AppDataStore {
             boolean valid = studentId.equalsIgnoreCase(user.optString("studentId")) && password.equals(user.optString("password"));
             if (valid) prefs(context).edit().putBoolean("loggedIn", true).apply();
             return valid;
-        } catch (JSONException e) { return false; }
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
     public static String userName(Context context) {
-        try { return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("name", "PolyGo member"); }
-        catch (JSONException e) { return "PolyGo member"; }
+        try {
+            return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("name", "PolyGo member");
+        } catch (JSONException e) {
+            return "PolyGo member";
+        }
     }
-    public static String userEmail(Context context) { try { return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("email", ""); } catch (JSONException e) { return ""; } }
-    public static String userStudentId(Context context) { try { return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("studentId", ""); } catch (JSONException e) { return ""; } }
-    public static String userMobile(Context context) { try { return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("mobile", ""); } catch (JSONException e) { return ""; } }
+
+    public static String userEmail(Context context) {
+        try {
+            return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("email", "");
+        } catch (JSONException e) {
+            return "";
+        }
+    }
+
+    public static String userStudentId(Context context) {
+        try {
+            return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("studentId", "");
+        } catch (JSONException e) {
+            return "";
+        }
+    }
+
+    public static String userMobile(Context context) {
+        try {
+            return new JSONObject(prefs(context).getString(KEY_USER, "{}")).optString("mobile", "");
+        } catch (JSONException e) {
+            return "";
+        }
+    }
 
     public static boolean updateProfile(Context context, String name, String email, String mobile) {
         try {
             JSONObject user = new JSONObject(prefs(context).getString(KEY_USER, "{}"));
-            user.put("name", name); user.put("email", email); user.put("mobile", mobile);
+            user.put("name", name);
+            user.put("email", email);
+            user.put("mobile", mobile);
             prefs(context).edit().putString(KEY_USER, user.toString()).apply();
             return true;
-        } catch (JSONException e) { return false; }
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
     public static boolean changePassword(Context context, String password) {
@@ -156,15 +207,19 @@ public final class AppDataStore {
             user.put("password", password);
             prefs(context).edit().putString(KEY_USER, user.toString()).apply();
             return true;
-        } catch (JSONException e) { return false; }
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
     public static List<ProductRecord> getListings(Context context) {
         List<ProductRecord> result = new ArrayList<>();
         JSONArray list = array(context, KEY_LISTINGS);
         for (int i = 0; i < list.length(); i++) {
-            try { result.add(ProductRecord.fromJson(list.getJSONObject(i))); }
-            catch (JSONException ignored) { }
+            try {
+                result.add(ProductRecord.fromJson(list.getJSONObject(i)));
+            } catch (JSONException ignored) {
+            }
         }
         return result;
     }
@@ -174,11 +229,18 @@ public final class AppDataStore {
         return null;
     }
 
-    public static ProductRecord addUserListing(Context context, String title, String category, String price, String description) { return addUserListing(context, title, category, price, description, ""); }
+    public static ProductRecord addUserListing(Context context, String title, String category, String price, String description) {
+        return addUserListing(context, title, category, price, description, "");
+    }
+
     public static ProductRecord addUserListing(Context context, String title, String category, String price, String description, String imageUri) {
         JSONArray list = array(context, KEY_LISTINGS);
         ProductRecord product = new ProductRecord(UUID.randomUUID().toString(), title, userName(context), price, "New", "Near campus", imageForCategory(category), imageUri, category, description, true, true);
-        try { list.put(product.toJson()); saveArray(context, KEY_LISTINGS, list); } catch (JSONException ignored) { }
+        try {
+            list.put(product.toJson());
+            saveArray(context, KEY_LISTINGS, list);
+        } catch (JSONException ignored) {
+        }
         addNotification(context, "Your listing is live", title + " was added to the marketplace.");
         return product;
     }
@@ -186,8 +248,15 @@ public final class AppDataStore {
     public static boolean markSold(Context context, String id) {
         JSONArray list = array(context, KEY_LISTINGS);
         for (int i = 0; i < list.length(); i++) {
-            try { JSONObject o = list.getJSONObject(i); if (id.equals(o.optString("id"))) { o.put("available", false); saveArray(context, KEY_LISTINGS, list); return true; } }
-            catch (JSONException ignored) { }
+            try {
+                JSONObject o = list.getJSONObject(i);
+                if (id.equals(o.optString("id"))) {
+                    o.put("available", false);
+                    saveArray(context, KEY_LISTINGS, list);
+                    return true;
+                }
+            } catch (JSONException ignored) {
+            }
         }
         return false;
     }
@@ -195,11 +264,14 @@ public final class AppDataStore {
     private static int imageForCategory(String category) {
         if ("Electronics".equalsIgnoreCase(category)) return R.drawable.bg_product_electronics;
         if ("Fashion".equalsIgnoreCase(category)) return R.drawable.bg_product_fashion;
-        if ("Furniture".equalsIgnoreCase(category) || "Home".equalsIgnoreCase(category)) return R.drawable.bg_product_furniture;
+        if ("Furniture".equalsIgnoreCase(category) || "Home".equalsIgnoreCase(category))
+            return R.drawable.bg_product_furniture;
         return R.drawable.bg_product_home;
     }
 
-    public static boolean isFavorite(Context context, String id) { return favoriteIds(context).contains(id); }
+    public static boolean isFavorite(Context context, String id) {
+        return favoriteIds(context).contains(id);
+    }
 
     public static void toggleFavorite(Context context, String id) {
         Set<String> ids = favoriteIds(context);
@@ -218,7 +290,8 @@ public final class AppDataStore {
     }
 
     public static List<ProductRecord> getFavorites(Context context) {
-        Set<String> ids = favoriteIds(context); List<ProductRecord> result = new ArrayList<>();
+        Set<String> ids = favoriteIds(context);
+        List<ProductRecord> result = new ArrayList<>();
         for (ProductRecord item : getListings(context)) if (ids.contains(item.id)) result.add(item);
         return result;
     }
@@ -235,100 +308,287 @@ public final class AppDataStore {
             JSONObject thread = new JSONObject();
             String id = UUID.randomUUID().toString();
             long now = System.currentTimeMillis();
-            thread.put("id", id); thread.put("listingId", listingId); thread.put("name", otherName); thread.put("unread", false);
+            thread.put("id", id);
+            thread.put("listingId", listingId);
+            thread.put("name", otherName);
+            thread.put("unread", false);
             JSONArray messages = new JSONArray();
             JSONObject message = new JSONObject();
-            message.put("sender", userName(context)); message.put("mine", true); message.put("text", initialMessage); message.put("time", now);
-            messages.put(message); thread.put("messages", messages); thread.put("lastMessageTime", now);
-            threads.put(thread); saveArray(context, KEY_THREADS, threads);
+            message.put("sender", userName(context));
+            message.put("mine", true);
+            message.put("text", initialMessage);
+            message.put("time", now);
+            messages.put(message);
+            thread.put("messages", messages);
+            thread.put("lastMessageTime", now);
+            threads.put(thread);
+            saveArray(context, KEY_THREADS, threads);
             return id;
-        } catch (JSONException ignored) { return null; }
+        } catch (JSONException ignored) {
+            return null;
+        }
     }
 
     public static String getOrCreateThread(Context context, String listingId, String otherName, String initialMessage) {
         for (ThreadRecord thread : getThreads(context)) {
-            if (listingId != null && listingId.equals(thread.listingId) && otherName.equals(thread.name)) return thread.id;
+            if (listingId != null && listingId.equals(thread.listingId) && otherName.equals(thread.name))
+                return thread.id;
         }
         return addThread(context, listingId, otherName, initialMessage);
     }
 
     public static List<ThreadRecord> getThreads(Context context) {
-        List<ThreadRecord> result = new ArrayList<>(); JSONArray list = array(context, KEY_THREADS);
-        for (int i = 0; i < list.length(); i++) try { result.add(ThreadRecord.fromJson(list.getJSONObject(i))); } catch (JSONException ignored) { }
+        List<ThreadRecord> result = new ArrayList<>();
+        JSONArray list = array(context, KEY_THREADS);
+        for (int i = 0; i < list.length(); i++)
+            try {
+                result.add(ThreadRecord.fromJson(list.getJSONObject(i)));
+            } catch (JSONException ignored) {
+            }
         return result;
     }
 
-    public static ThreadRecord getThread(Context context, String id) { for (ThreadRecord t : getThreads(context)) if (t.id.equals(id)) return t; return null; }
+    public static ThreadRecord getThread(Context context, String id) {
+        for (ThreadRecord t : getThreads(context)) if (t.id.equals(id)) return t;
+        return null;
+    }
 
     public static void markThreadRead(Context context, String threadId) {
         JSONArray threads = array(context, KEY_THREADS);
-        for (int i = 0; i < threads.length(); i++) try {
-            JSONObject thread = threads.getJSONObject(i);
-            if (threadId.equals(thread.optString("id"))) {
-                thread.put("unread", false);
-                saveArray(context, KEY_THREADS, threads);
-                return;
+        for (int i = 0; i < threads.length(); i++)
+            try {
+                JSONObject thread = threads.getJSONObject(i);
+                if (threadId.equals(thread.optString("id"))) {
+                    thread.put("unread", false);
+                    saveArray(context, KEY_THREADS, threads);
+                    return;
+                }
+            } catch (JSONException ignored) {
             }
-        } catch (JSONException ignored) { }
     }
 
     public static void sendMessage(Context context, String threadId, String text) {
         JSONArray threads = array(context, KEY_THREADS);
-        for (int i = 0; i < threads.length(); i++) try {
-            JSONObject t = threads.getJSONObject(i);
-            if (threadId.equals(t.optString("id"))) {
-                JSONArray msgs = t.optJSONArray("messages"); if (msgs == null) msgs = new JSONArray();
-                long now = System.currentTimeMillis();
-                JSONObject m = new JSONObject(); m.put("sender", userName(context)); m.put("mine", true); m.put("text", text); m.put("time", now); msgs.put(m);
-                t.put("messages", msgs); t.put("lastMessageTime", now); t.put("unread", false);
-                saveArray(context, KEY_THREADS, threads); return;
+        for (int i = 0; i < threads.length(); i++)
+            try {
+                JSONObject t = threads.getJSONObject(i);
+                if (threadId.equals(t.optString("id"))) {
+                    JSONArray msgs = t.optJSONArray("messages");
+                    if (msgs == null) msgs = new JSONArray();
+                    long now = System.currentTimeMillis();
+                    JSONObject m = new JSONObject();
+                    m.put("sender", userName(context));
+                    m.put("mine", true);
+                    m.put("text", text);
+                    m.put("time", now);
+                    msgs.put(m);
+                    t.put("messages", msgs);
+                    t.put("lastMessageTime", now);
+                    t.put("unread", false);
+                    saveArray(context, KEY_THREADS, threads);
+                    return;
+                }
+            } catch (JSONException ignored) {
             }
-        } catch (JSONException ignored) { }
     }
 
     public static void addNotification(Context context, String title, String body) {
-        JSONArray list = array(context, KEY_NOTIFICATIONS); try { JSONObject o = new JSONObject(); o.put("title", title); o.put("body", body); o.put("time", System.currentTimeMillis()); o.put("read", false); list.put(o); saveArray(context, KEY_NOTIFICATIONS, list); } catch (JSONException ignored) { }
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        try {
+            JSONObject o = new JSONObject();
+            o.put("title", title);
+            o.put("body", body);
+            o.put("time", System.currentTimeMillis());
+            o.put("read", false);
+            list.put(o);
+            saveArray(context, KEY_NOTIFICATIONS, list);
+        } catch (JSONException ignored) {
+        }
     }
 
     public static void addTransaction(Context context, String listingId, String title, String amount) {
         JSONArray list = array(context, KEY_TRANSACTIONS);
-        try { JSONObject o = new JSONObject(); o.put("id", UUID.randomUUID().toString()); o.put("listingId", listingId); o.put("title", title); o.put("amount", amount); o.put("status", "Offer sent"); o.put("time", System.currentTimeMillis()); list.put(o); saveArray(context, KEY_TRANSACTIONS, list); addNotification(context, "Offer sent", "Your offer for " + title + " was saved."); } catch (JSONException ignored) { }
+        try {
+            JSONObject o = new JSONObject();
+            o.put("id", UUID.randomUUID().toString());
+            o.put("listingId", listingId);
+            o.put("title", title);
+            o.put("amount", amount);
+            o.put("status", "Offer sent");
+            o.put("time", System.currentTimeMillis());
+            list.put(o);
+            saveArray(context, KEY_TRANSACTIONS, list);
+            addNotification(context, "Offer sent", "Your offer for " + title + " was saved.");
+        } catch (JSONException ignored) {
+        }
     }
 
     public static List<String[]> getTransactions(Context context) {
-        List<String[]> result = new ArrayList<>(); JSONArray list = array(context, KEY_TRANSACTIONS);
-        for (int i = list.length() - 1; i >= 0; i--) try { JSONObject o = list.getJSONObject(i); result.add(new String[]{o.optString("title"), o.optString("amount"), o.optString("status")}); } catch (JSONException ignored) { }
+        List<String[]> result = new ArrayList<>();
+        JSONArray list = array(context, KEY_TRANSACTIONS);
+        for (int i = list.length() - 1; i >= 0; i--)
+            try {
+                JSONObject o = list.getJSONObject(i);
+                result.add(new String[]{o.optString("title"), o.optString("amount"), o.optString("status")});
+            } catch (JSONException ignored) {
+            }
         return result;
     }
 
-    public static List<NotificationRecord> getNotifications(Context context) { List<NotificationRecord> result = new ArrayList<>(); JSONArray list = array(context, KEY_NOTIFICATIONS); for (int i = list.length()-1; i >= 0; i--) try { result.add(NotificationRecord.fromJson(list.getJSONObject(i))); } catch (JSONException ignored) { } return result; }
-    public static boolean isVerified(Context context) { return prefs(context).getBoolean(KEY_VERIFICATION, false); }
-    public static boolean verifyAccount(Context context, String studentId, String email) {
-        try { JSONObject user = new JSONObject(prefs(context).getString(KEY_USER, "{}")); boolean valid = studentId.equalsIgnoreCase(user.optString("studentId")) && email.equalsIgnoreCase(user.optString("email")); if (valid) setVerified(context); return valid; } catch (JSONException e) { return false; }
+    public static List<NotificationRecord> getNotifications(Context context) {
+        List<NotificationRecord> result = new ArrayList<>();
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        for (int i = list.length() - 1; i >= 0; i--)
+            try {
+                result.add(NotificationRecord.fromJson(list.getJSONObject(i)));
+            } catch (JSONException ignored) {
+            }
+        return result;
     }
-    public static void setVerified(Context context) { prefs(context).edit().putBoolean(KEY_VERIFICATION, true).apply(); addNotification(context, "Verification complete", "Your PolyGo account is now verified."); }
+
+    public static int getUnreadNotificationCount(Context context) {
+        int count = 0;
+        for (NotificationRecord n : getNotifications(context)) if (!n.read) count++;
+        return count;
+    }
+
+    public static void markNotificationRead(Context context, String id) {
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        for (int i = 0; i < list.length(); i++)
+            try {
+                JSONObject o = list.getJSONObject(i);
+                if (id.equals(o.optString("id"))) {
+                    o.put("read", true);
+                    saveArray(context, KEY_NOTIFICATIONS, list);
+                    return;
+                }
+            } catch (JSONException ignored) {
+            }
+    }
+
+    public static void markNotificationsRead(Context context) {
+        JSONArray list = array(context, KEY_NOTIFICATIONS);
+        for (int i = 0; i < list.length(); i++)
+            try {
+                list.getJSONObject(i).put("read", true);
+            } catch (JSONException ignored) {
+            }
+        saveArray(context, KEY_NOTIFICATIONS, list);
+    }
+
+    public static boolean isVerified(Context context) {
+        return prefs(context).getBoolean(KEY_VERIFICATION, false);
+    }
+
+    public static boolean verifyAccount(Context context, String studentId, String email) {
+        try {
+            JSONObject user = new JSONObject(prefs(context).getString(KEY_USER, "{}"));
+            boolean valid = studentId.equalsIgnoreCase(user.optString("studentId")) && email.equalsIgnoreCase(user.optString("email"));
+            if (valid) setVerified(context);
+            return valid;
+        } catch (JSONException e) {
+            return false;
+        }
+    }
+
+    public static void setVerified(Context context) {
+        prefs(context).edit().putBoolean(KEY_VERIFICATION, true).apply();
+        addNotification(context, "Verification complete", "Your PolyGo account is now verified.");
+    }
 
     public static final class ProductRecord {
-        public final String id, title, seller, price, rating, distance, imageUri, category, description; public final int imageRes; public final boolean owner, available;
-        public ProductRecord(String id, String title, String seller, String price, String rating, String distance, int imageRes, String category, String description, boolean owner, boolean available) { this(id,title,seller,price,rating,distance,imageRes,"",category,description,owner,available); }
-        public ProductRecord(String id, String title, String seller, String price, String rating, String distance, int imageRes, String imageUri, String category, String description, boolean owner, boolean available) { this.id=id; this.title=title; this.seller=seller; this.price=price; this.rating=rating; this.distance=distance; this.imageRes=imageRes; this.imageUri=imageUri; this.category=category; this.description=description; this.owner=owner; this.available=available; }
-        static ProductRecord fromJson(JSONObject o) { return new ProductRecord(o.optString("id"), o.optString("title"), o.optString("seller"), o.optString("price"), o.optString("rating"), o.optString("distance"), o.optInt("imageRes", R.drawable.bg_product_home), o.optString("imageUri"), o.optString("category"), o.optString("description"), o.optBoolean("owner"), o.optBoolean("available", true)); }
-        JSONObject toJson() throws JSONException { JSONObject o = new JSONObject(); o.put("id",id);o.put("title",title);o.put("seller",seller);o.put("price",price);o.put("rating",rating);o.put("distance",distance);o.put("imageRes",imageRes);o.put("imageUri",imageUri);o.put("category",category);o.put("description",description);o.put("owner",owner);o.put("available",available);return o; }
+        public final String id, title, seller, price, rating, distance, imageUri, category, description;
+        public final int imageRes;
+        public final boolean owner, available;
+
+        public ProductRecord(String id, String title, String seller, String price, String rating, String distance, int imageRes, String category, String description, boolean owner, boolean available) {
+            this(id, title, seller, price, rating, distance, imageRes, "", category, description, owner, available);
+        }
+
+        public ProductRecord(String id, String title, String seller, String price, String rating, String distance, int imageRes, String imageUri, String category, String description, boolean owner, boolean available) {
+            this.id = id;
+            this.title = title;
+            this.seller = seller;
+            this.price = price;
+            this.rating = rating;
+            this.distance = distance;
+            this.imageRes = imageRes;
+            this.imageUri = imageUri;
+            this.category = category;
+            this.description = description;
+            this.owner = owner;
+            this.available = available;
+        }
+
+        static ProductRecord fromJson(JSONObject o) {
+            return new ProductRecord(o.optString("id"), o.optString("title"), o.optString("seller"), o.optString("price"), o.optString("rating"), o.optString("distance"), o.optInt("imageRes", R.drawable.bg_product_home), o.optString("imageUri"), o.optString("category"), o.optString("description"), o.optBoolean("owner"), o.optBoolean("available", true));
+        }
+
+        JSONObject toJson() throws JSONException {
+            JSONObject o = new JSONObject();
+            o.put("id", id);
+            o.put("title", title);
+            o.put("seller", seller);
+            o.put("price", price);
+            o.put("rating", rating);
+            o.put("distance", distance);
+            o.put("imageRes", imageRes);
+            o.put("imageUri", imageUri);
+            o.put("category", category);
+            o.put("description", description);
+            o.put("owner", owner);
+            o.put("available", available);
+            return o;
+        }
     }
+
     public static final class ThreadRecord {
         public final String id, listingId, name, preview;
         public final JSONArray messages;
         public final boolean unread;
         public final long lastMessageTime;
+
         ThreadRecord(String id, String listingId, String name, String preview, JSONArray messages, boolean unread, long lastMessageTime) {
-            this.id=id; this.listingId=listingId; this.name=name; this.preview=preview; this.messages=messages; this.unread=unread; this.lastMessageTime=lastMessageTime;
+            this.id = id;
+            this.listingId = listingId;
+            this.name = name;
+            this.preview = preview;
+            this.messages = messages;
+            this.unread = unread;
+            this.lastMessageTime = lastMessageTime;
         }
+
         static ThreadRecord fromJson(JSONObject o) {
-            JSONArray m=o.optJSONArray("messages"); if(m==null)m=new JSONArray();
-            String p=""; long time=o.optLong("lastMessageTime", 0);
-            if(m.length()>0) { JSONObject last=m.optJSONObject(m.length()-1); if(last!=null) { p=last.optString("text",""); if(time==0) time=last.optLong("time",0); } }
-            return new ThreadRecord(o.optString("id"),o.optString("listingId"),o.optString("name"),p,m,o.optBoolean("unread",false),time);
+            JSONArray m = o.optJSONArray("messages");
+            if (m == null) m = new JSONArray();
+            String p = "";
+            long time = o.optLong("lastMessageTime", 0);
+            if (m.length() > 0) {
+                JSONObject last = m.optJSONObject(m.length() - 1);
+                if (last != null) {
+                    p = last.optString("text", "");
+                    if (time == 0) time = last.optLong("time", 0);
+                }
+            }
+            return new ThreadRecord(o.optString("id"), o.optString("listingId"), o.optString("name"), p, m, o.optBoolean("unread", false), time);
         }
     }
-    public static final class NotificationRecord { public final String title, body; public NotificationRecord(String title,String body){this.title=title;this.body=body;} static NotificationRecord fromJson(JSONObject o){return new NotificationRecord(o.optString("title"),o.optString("body"));} }
+
+    public static final class NotificationRecord {
+        public final String id, title, body;
+        public final long time;
+        public final boolean read;
+
+        public NotificationRecord(String id, String title, String body, long time, boolean read) {
+            this.id = id;
+            this.title = title;
+            this.body = body;
+            this.time = time;
+            this.read = read;
+        }
+
+        static NotificationRecord fromJson(JSONObject o) {
+            return new NotificationRecord(o.optString("id"), o.optString("title"), o.optString("body"), o.optLong("time", 0), o.optBoolean("read", false));
+        }
+    }
 }
