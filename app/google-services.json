@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751821425924",
+    "project_id": "polygo-143cf",
+    "storage_bucket": "polygo-143cf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751821425924:android:374c3952a55d0ae263d451",
+        "android_client_info": {
+          "package_name": "com.poliku.polygoplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSA2jXfQQEsDmDWdR_XDbnSaJ-_bL5KUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
